@@ -23,37 +23,36 @@ import pe.examen.DSWII_T3_Luyo_Orccotoma_Alejandro.service.DetalleUsuarioService
 @Configuration
 public class SecurityConfig {
     private final DetalleUsuarioService detalleUsuarioService;
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)
-            throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(
-                        auth ->
-                                auth.requestMatchers(HttpMethod.GET, "/api/v1/auth/**")
-                                        .permitAll()
-                                        .anyRequest()
-                                        .authenticated())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/filesimages").hasRole("Gestor")
+                        .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(new FiltroJWTAutorizacion(),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new FiltroJWTAutorizacion(), UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
+
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new
-                DaoAuthenticationProvider();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(detalleUsuarioService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
+
     @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration) throws Exception{
-        return  configuration.getAuthenticationManager();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
