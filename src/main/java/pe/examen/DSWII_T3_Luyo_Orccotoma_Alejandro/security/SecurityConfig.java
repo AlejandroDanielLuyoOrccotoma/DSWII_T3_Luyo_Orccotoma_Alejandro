@@ -35,8 +35,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/filesimages").hasRole("Gestor")
-                        .requestMatchers(HttpMethod.GET, "/pubs-dto").hasRole("Coordinador")
+                        .requestMatchers(HttpMethod.POST, "/filesimages").hasRole("GESTOR")
+                        .requestMatchers(HttpMethod.GET, "/pubs-dto").hasRole("COORDINADOR")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(new FiltroJWTAutorizacion(), UsernamePasswordAuthenticationFilter.class);
