@@ -18,9 +18,11 @@ public class DswiiT3LuyoOrccotomaAlejandroApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("api/v1/**")
-						.allowedMethods("GET", "POST", "PUT")
-						.allowedOrigins("*");
+				registry.addMapping("/**")
+						.allowedOrigins("https://www.cibertec.edu.pe")
+						.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+						.allowedHeaders("*")
+						.allowCredentials(true);
 			}
 		};
 	}

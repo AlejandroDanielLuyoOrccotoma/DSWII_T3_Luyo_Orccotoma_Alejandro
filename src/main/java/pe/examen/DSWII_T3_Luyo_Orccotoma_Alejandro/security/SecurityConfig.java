@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/v1/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/filesimages").hasRole("Gestor")
+                        .requestMatchers(HttpMethod.GET, "/pubs-dto").hasRole("Coordinador")
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(new FiltroJWTAutorizacion(), UsernamePasswordAuthenticationFilter.class);
